@@ -17,12 +17,12 @@ contract Deploy_NFT is Script {
             "V&R: Amps & Effects"
         );
         console.log("Amps & Effects: %s", address(nft));
-        new VintageAndRareNFTs(
+        nft = new VintageAndRareNFTs(
             "Vintage & Rare: Electric Bass",
             "V&R: Electric Bass"
         );
         console.log("Electric Bass: %s", address(nft));
-        new VintageAndRareNFTs(
+        nft = new VintageAndRareNFTs(
             "Vintage & Rare: Electric Guitar",
             "V&R: Electric Guitar"
         );
