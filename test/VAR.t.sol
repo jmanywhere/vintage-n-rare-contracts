@@ -21,9 +21,20 @@ contract Test_NFT is Test {
 
     function test_mint_and_safekeep() public {
         uint balance = address(owner).balance;
+        // no public fee
+        vm.prank(user1);
+        vm.expectRevert();
+        nft.mint{value: 0.15 ether}("test");
+
+        vm.prank(owner);
+        nft.setPublicFee(0.15 ether);
+
+        //no value
         vm.prank(user1);
         vm.expectRevert();
         nft.mint("test");
+
+        //  ok
         vm.prank(user1);
         nft.mint{value: 0.15 ether}("test");
 
@@ -37,6 +48,8 @@ contract Test_NFT is Test {
     }
 
     function test_mint_and_send() public {
+        vm.prank(owner);
+        nft.setPublicFee(0.15 ether);
         vm.prank(user1);
         nft.mint{value: 0.15 ether}("test");
 
@@ -52,6 +65,8 @@ contract Test_NFT is Test {
     }
 
     function test_transfer() public {
+        vm.prank(owner);
+        nft.setPublicFee(0.15 ether);
         vm.startPrank(user1);
         nft.mint{value: 0.15 ether}("test");
 
