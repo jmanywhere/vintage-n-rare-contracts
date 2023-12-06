@@ -54,13 +54,15 @@ contract VintageAndRareNFTs is
     // EVENTS
     //-------------------------------------------------------------------------
     event SetPublicFee(uint indexed prevFee, uint indexed newFee);
+    event SetCreator(address indexed creator, bool value);
+    event SetContractURI(string indexed contractURI);
     //-------------------------------------------------------------------------
     // MODIFIERS
     //-------------------------------------------------------------------------
     modifier checkCreator() {
         bool isCreator = creators[msg.sender];
         bool hasValue = msg.value >= publicFee;
-        if (isCreator || publicFee == 0 || hasValue) _;
+        if (isCreator || (publicFee > 0 && hasValue)) _;
         else {
             revert Unauthorized();
         }
@@ -75,7 +77,7 @@ contract VintageAndRareNFTs is
     ) ERC721(_name, _symbol) {
         totalSupply = 0;
         creators[msg.sender] = true;
-        publicFee = 0.15 ether;
+        publicFee = 0;
     }
 
     //-------------------------------------------------------------------------
@@ -153,6 +155,7 @@ contract VintageAndRareNFTs is
             revert VnR__InvalidURI();
 
         contractURI = _uri;
+        emit SetContractURI(_uri);
     }
 
     /**
@@ -162,6 +165,7 @@ contract VintageAndRareNFTs is
      */
     function setCreator(address _creator, bool _value) public onlyOwner {
         creators[_creator] = _value;
+        emit SetCreator(_creator, _value);
     }
 
     /**
