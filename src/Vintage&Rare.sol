@@ -14,6 +14,7 @@ error VnR__InvalidTokenId();
 error VnR__NoZeroAddress();
 error VnR__OnlyWhileMinting();
 error VnR__NoBalance();
+error VnR__InvalidURI();
 
 /**
  * @title VintageAndRareNFTs
@@ -59,16 +60,19 @@ contract VintageAndRareNFTs is
     modifier checkCreator() {
         bool isCreator = creators[msg.sender];
         bool hasValue = msg.value >= publicFee;
-        if (isCreator || (publicFee > 0 && hasValue)) _;
+        if (isCreator || publicFee == 0 || hasValue) _;
         else {
             revert Unauthorized();
         }
     }
 
-    //-------------------------------------------------------------------------
+    //----------------------------------------------------- --------------------
     // CONSTRUCTOR
     //-------------------------------------------------------------------------
-    constructor() ERC721("VintageAndRare", "VnR") {
+    constructor(
+        string memory _name,
+        string memory _symbol
+    ) ERC721(_name, _symbol) {
         totalSupply = 0;
         creators[msg.sender] = true;
         publicFee = 0.15 ether;
@@ -145,8 +149,8 @@ contract VintageAndRareNFTs is
      * @param _uri - URI to set for the contract
      */
     function setContractURI(string memory _uri) public onlyOwner {
-        require(bytes(_uri).length > 0, "UW: URI cannot be empty");
-        require(bytes(contractURI).length == 0, "UW: Contract URI already set");
+        if (bytes(_uri).length == 0 || bytes(contractURI).length != 0)
+            revert VnR__InvalidURI();
 
         contractURI = _uri;
     }
