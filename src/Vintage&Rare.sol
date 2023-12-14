@@ -19,7 +19,7 @@ error VnR__InvalidURI();
 /**
  * @title VintageAndRareNFTs
  * @dev ERC721 contract for Vintage and Rare NFTs
- * Vintage and Rare is a collection of NFTs that represent Collection Watches. Each watch is minted with a unique ID and has a unique set of attributes.
+ * Vintage and Rare is a collection of NFTs that represent Vintage and Rare Instruments. Each watch is minted with a unique ID and has a unique set of attributes.
  * The attributes are:
  * 1. Name
  * 2. Brand
